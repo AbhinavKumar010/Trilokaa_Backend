@@ -21,9 +21,13 @@ export const getVideoById = async (req, res) => {
 
 export const uploadVideo = async (req, res) => {
   try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No video file uploaded" });
+    }
+
     const { title, description, uploader } = req.body;
     const videoUrl = req.file ? `/uploads/${req.file.filename}` : "";
-    const thumbnailUrl = req.body.thumbnailUrl || ""; // optional thumbnail
+    const thumbnailUrl = req.body.thumbnailUrl || "";
 
     const newVideo = new Video({
       title,
@@ -37,7 +41,7 @@ export const uploadVideo = async (req, res) => {
     const savedVideo = await newVideo.save();
     res.status(201).json(savedVideo);
   } catch (error) {
-    console.error(error);
+    console.error("Upload video error:", error);
     res.status(500).json({ message: error.message });
   }
 };
