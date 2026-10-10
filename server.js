@@ -8,17 +8,18 @@ import { fileURLToPath } from "url";
 import connectDB from "./config/db.js";
 import videoRoutes from "./routes/videoRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.join(__dirname, ".env") });
 connectDB();
 
 const app = express();
 app.use(cors({ origin: ["http://localhost:5173", "https://my-tube-two-xi.vercel.app/"] }));
 app.use(express.json());
 
-// __dirname fix for ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const uploadsDir = path.join(__dirname, "uploads");
 fs.mkdirSync(uploadsDir, { recursive: true });
 
@@ -28,6 +29,7 @@ app.use("/uploads", express.static(uploadsDir));
 // Routes
 app.use("/api/videos", videoRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));

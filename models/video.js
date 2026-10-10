@@ -4,9 +4,10 @@ const videoSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
     description: { type: String },
-    thumbnailUrl: { type: String }, // optional field
+    thumbnailUrl: { type: String },
     videoUrl: { type: String, required: true },
     uploader: { type: String, default: "Unknown" },
+    uploaderId: { type: String, default: "" },
     views: { type: Number, default: 0 },
   },
   { timestamps: true }
